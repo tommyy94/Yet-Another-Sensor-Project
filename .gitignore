@@ -26,3 +26,16 @@ MDK-ARM		# Config not yet finished
 *.pbd.*  
 *.pbi  
 *.pbi.* 
+
+# Visual Studio
+.vs
+
+# Output
+*.lss
+*.hex
+*.elf
+*.map
+*.srec
+*.mk
+*.o
+*.d

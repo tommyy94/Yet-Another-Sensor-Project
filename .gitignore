@@ -1,0 +1,28 @@
+readme.txt
+Release_Notes.html
+/Projects/CORTEX_STM32L152_IAR
+MDK-ARM		# Config not yet finished
+*.bak
+
+# IAR Settings  
+*.dep
+*.ewt
+*.dnx
+
+*.crun  
+*.dbgdt  
+*.cspy  
+*.cspy.*  
+*.xcl  
+*.dni  
+*.wsdt  
+*.wspos  
+
+# IAR Debug Exe  
+*.sim  
+
+# IAR Debug Obj  
+*.pbd  
+*.pbd.*  
+*.pbi  
+*.pbi.* 

@@ -28,8 +28,10 @@ int main(void)
 
     while(1) {
         ADC_start_conversion();
-        UART_transmit(ADCH);
-        UART_transmit(ADCL);
+        //UART_transmit(ADCH);
+        //UART_transmit(ADCL);
+        UART_transmit(12);
+        UART_transmit(34);
         power_down();
     }
     return 0;

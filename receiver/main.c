@@ -21,13 +21,18 @@ inline void UART_init(void);
 uint16_t get_multiplier(uint8_t value);
 
 
+/**
+ * @brief Main entry point.
+ * @param void
+ * @return void
+ */
 void main(void)
 {
     char string[BUFSIZ];
-    volatile uint8_t adc_val_h;
-    volatile uint8_t adc_val_l;
-    volatile uint16_t adc_val;
-    volatile uint16_t mul;
+    uint8_t adc_val_h;
+    uint8_t adc_val_l;
+    uint16_t adc_val;
+    uint16_t mul;
 
     LCD_init();
     UART_init();
@@ -39,9 +44,7 @@ void main(void)
             for(uint8_t i = 0; i <= BUFSIZ - buff_index; i += 2) {
                 adc_val_h = RX_buff[i];
                 adc_val_l =  RX_buff[i + 1];
-
                 mul = get_multiplier(adc_val_l);
-
                 adc_val = (adc_val_h * mul) + adc_val_l;
                 itoa(adc_val, string, 10);
                 LCD_write_string(0, 0, (const char *)string);
@@ -53,6 +56,11 @@ void main(void)
 }
 
 
+/**
+ * @brief Initializes UART with 8N1 and defined baud rate.
+ * @param void
+ * @return void
+ */
 inline void UART_init(void)
 {
     /* enable internal pull-up */
@@ -68,6 +76,11 @@ inline void UART_init(void)
 }
 
 
+/**
+ * @brief Determines multiplier based on number of digits.
+ * @param value : value to get multiplier of
+ * @return mul : multiplier
+ */
 uint16_t get_multiplier(uint8_t value)
 {
     uint16_t mul;
@@ -84,6 +97,9 @@ uint16_t get_multiplier(uint8_t value)
 }
 
 
+/**
+ * @brief USART vector
+ */
 ISR(USART_RX_vect)
 {
     if(buff_index >= BUFSIZ) {

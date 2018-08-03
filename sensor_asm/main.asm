@@ -47,7 +47,7 @@ CLK_init:
     out CLKPSR, r16   
 
 WDT_init:
-    ; Enable Watchdog interrupt, prescaler 128K = ~1.0s              
+    ; Enable Watchdog interrupt, 128K WDT Oscillator (Cycles) = ~1.0s oscillator             
     ldi r16, (1 << WDIE) | (1 << WDP2) | (1 << WDP1) 
     out WDTCSR, r16
 

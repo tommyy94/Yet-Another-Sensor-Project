@@ -3,13 +3,13 @@
 #include <avr/interrupt.h>
 #include <util/setbaud.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #include "LCD_driver/LCD.h"
 
 
 #define BUFSIZ 254
 #define DELAY 10
-#define EOT 0x04
 
 
 volatile char RX_buff[BUFSIZ];
@@ -18,11 +18,16 @@ volatile bool RX_flag = false;
 
 
 inline void UART_init(void);
+uint16_t get_multiplier(uint8_t value);
 
 
 void main(void)
 {
     char string[BUFSIZ];
+    volatile uint8_t adc_val_h;
+    volatile uint8_t adc_val_l;
+    volatile uint16_t adc_val;
+    volatile uint16_t mul;
 
     LCD_init();
     UART_init();
@@ -32,8 +37,13 @@ void main(void)
     while(1) {
         if(RX_flag == true) {
             for(uint8_t i = 0; i <= BUFSIZ - buff_index; i += 2) {
-                string[0] = RX_buff[i];
-                string[1] = RX_buff[i + 1];
+                adc_val_h = RX_buff[i];
+                adc_val_l =  RX_buff[i + 1];
+
+                mul = get_multiplier(adc_val_l);
+
+                adc_val = (adc_val_h * mul) + adc_val_l;
+                itoa(adc_val, string, 10);
                 LCD_write_string(0, 0, (const char *)string);
             }
             RX_flag = false;
@@ -55,6 +65,22 @@ inline void UART_init(void)
 
     /* enable receiver and its interrupt */
     UCSR0B = (1 << RXCIE0) | (1 << RXEN0);
+}
+
+
+uint16_t get_multiplier(uint8_t value)
+{
+    uint16_t mul;
+
+    if(value >= 100) {
+        mul = 1000;
+    } else if(value < 100 && (value >= 10)) {
+        mul = 100;
+    } else {
+        mul = 10;
+    }
+
+    return mul;
 }
 
 

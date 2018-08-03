@@ -87,7 +87,7 @@ main:
 
     mov r20, r25
     rcall USART_transmit
-    mov r20, r24       
+    mov r20, r24    
     rcall USART_transmit
 
     rcall delay    

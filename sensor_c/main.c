@@ -140,8 +140,10 @@ inline void GPIO_init(void)
     EICRA = (1 << ISC01);
     EIMSK = (1 << INT0);
 
+#ifdef HEARTBEAT
     DDRA |= (1 << DDRA5);
     PORTA &= ~(1 << PINA5);
+#endif
 }
 
 

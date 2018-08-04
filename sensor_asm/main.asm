@@ -14,7 +14,7 @@
 .org $0000
 
 rjmp RESET              ; Reset Handler
-reti                    ; IRQ0 Handler
+rjmp INT0_vect          ; IRQ0 Handler
 reti                    ; PCINT0 Handler
 reti                    ; PCINT1 Handler
 reti                    ; Timer/Counter0 Capture Handler
@@ -29,7 +29,6 @@ reti                    ; USART0 Rx Start Handler
 reti                    ; USART0 Rx Complete Handler
 reti                    ; USART0 Data Register Empty Handler
 reti                    ; USART0 Tx Complete Handler
-
 
 
 RESET:
@@ -54,9 +53,29 @@ WDT_init:
 PRR_init:
     ; Disable TIMER0
     ldi r16, (1 << PRTIM0)
-    out PRR, r16  
+    out PRR, r16     
+
+GPIO_init:
+    ; Switch
+    ldi r16, (1 << SYS_RESET_PIN)
+    out PUEB, r16 
+    ldi r16, (1 << SYS_RESET_PIN)
+    out PORTB, r16
+
+    ; INT0
+    ldi r16, (1 << ISC01)
+    out EICRA, r16
+    ldi r16, (1 << INT0)   
+    out EIMSK, r16   
+        
+    ; LED
+    ldi r16, (1 << DDRA5)
+    out DDRA, r16
+    ldi r16, ~(1 << PINA5)
+    out PORTA, r16
 
 ADC_init:
+    ; Select ADC channel
     ldi r16, (1 << REFS0) | ADC0
     out ADMUX, r16
     ; Enable ADC, interrupt on success
@@ -91,7 +110,7 @@ main:
     rcall USART_transmit
 
     rcall delay    
-    rjmp main
+    rjmp main   
 
 
 delay:
@@ -128,8 +147,7 @@ tx_done_loop:
     ret
 
 
-USART_transmit:  
-    cli                         ; Disable interrupts  
+USART_transmit:
 
 wait_for_empty_tx_buff1:
     in r16, UCSRA
@@ -139,7 +157,6 @@ wait_for_empty_tx_buff1:
     out UDR, r20
 
     rcall wait_until_tx_done            
-    sei                         ; Enable interrupts  
     ret
 
 
@@ -161,6 +178,12 @@ ADC_start_conversion:
     out PRR, r16
 
     ret
+    
+
+software_reset:
+    ldi r16, (1 << WDE)
+    out WDTCSR, r16
+    ret
 
 
 ;******************************************************************************;
@@ -171,8 +194,20 @@ ADC_vect:
     ; Move ADC result to register pair r25:r24 
     in r24, ADCL   
     in r25, ADCH  
-    RESTORE_SREG 
+    RESTORE_SREG   
+     
+    #ifdef HEARTBEAT
+    TOGGLE_BIT PINA5, PINA, PORTA
+    #endif
+    reti
+     
+
+
+INT0_vect:   
+    SAVE_SREG
+    rcall software_reset  
+    RESTORE_SREG   
     reti
 
- 
+
 .exit

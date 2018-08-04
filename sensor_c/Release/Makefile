@@ -32,12 +32,18 @@ LIB_DEP:=
 LINKER_SCRIPT_DEP:=
 
 # Every subdirectory with source files must be described here
-SUBDIRS := 
+SUBDIRS :=  \
+../inc \
+../src
 
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
-../main.c
+../src/analog.c \
+../src/clock.c \
+../src/main.c \
+../src/sys_control.c \
+../src/serial.c
 
 
 PREPROCESSING_SRCS += 
@@ -47,16 +53,32 @@ ASM_SRCS +=
 
 
 OBJS +=  \
-main.o
+src/analog.o \
+src/clock.o \
+src/main.o \
+src/sys_control.o \
+src/serial.o
 
 OBJS_AS_ARGS +=  \
-main.o
+src/analog.o \
+src/clock.o \
+src/main.o \
+src/sys_control.o \
+src/serial.o
 
 C_DEPS +=  \
-main.d
+src/analog.d \
+src/clock.d \
+src/main.d \
+src/sys_control.d \
+src/serial.d
 
 C_DEPS_AS_ARGS +=  \
-main.d
+src/analog.d \
+src/clock.d \
+src/main.d \
+src/sys_control.d \
+src/serial.d
 
 OUTPUT_FILE_PATH +=sensor_c.elf
 
@@ -72,10 +94,38 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
-./main.o: .././main.c
+src/analog.o: ../src/analog.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
-	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DNDEBUG -DF_CPU=1000000UL -DBAUD=4800  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\include"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -Wextra -Wundef -pedantic -mmcu=attiny104 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\gcc\dev\attiny104" -c -std=gnu99 -v -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DNDEBUG -DF_CPU=1000000UL -DBAUD=4800  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\include" -I"../inc" -I"../src"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -Wextra -Wundef -pedantic -mmcu=attiny104 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\gcc\dev\attiny104" -c -std=gnu99 -v -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/clock.o: ../src/clock.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DNDEBUG -DF_CPU=1000000UL -DBAUD=4800  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\include" -I"../inc" -I"../src"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -Wextra -Wundef -pedantic -mmcu=attiny104 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\gcc\dev\attiny104" -c -std=gnu99 -v -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/main.o: ../src/main.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DNDEBUG -DF_CPU=1000000UL -DBAUD=4800  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\include" -I"../inc" -I"../src"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -Wextra -Wundef -pedantic -mmcu=attiny104 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\gcc\dev\attiny104" -c -std=gnu99 -v -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/sys_control.o: ../src/sys_control.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DNDEBUG -DF_CPU=1000000UL -DBAUD=4800  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\include" -I"../inc" -I"../src"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -Wextra -Wundef -pedantic -mmcu=attiny104 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\gcc\dev\attiny104" -c -std=gnu99 -v -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+src/serial.o: ../src/serial.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DNDEBUG -DF_CPU=1000000UL -DBAUD=4800  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\include" -I"../inc" -I"../src"  -Os -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -Wall -Wextra -Wundef -pedantic -mmcu=attiny104 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.172\gcc\dev\attiny104" -c -std=gnu99 -v -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
 	@echo Finished building: $<
 	
 

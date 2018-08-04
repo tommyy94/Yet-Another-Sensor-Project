@@ -1,3 +1,3 @@
 # Yet Another Sensor Project
-* Send remote (ATtiny104) temperature data to main MCU (ATmega328P)
+* Slave MCU (ATtiny104) sends remote  temperature data to master MCU (ATmega328P)
 * 2 versions for remote units: C and assembly

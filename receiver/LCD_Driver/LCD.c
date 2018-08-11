@@ -37,6 +37,23 @@ Execute instruction, then set data lines to write mode.
 static void LCD_wait_if_busy(void);
 
 
+/***************************************************************************//**
+@brief Moves LCD cursor to given position.
+@details Cursor is moved relative to first line.
+@param X & Y -coordinates
+@return void
+*******************************************************************************/
+static void LCD_move_cursor(uint8_t const x, uint8_t const y);
+
+
+/***************************************************************************//**
+@brief Sends a character when LCD is available.
+@param Character to send
+@return void
+*******************************************************************************/
+static inline void LCD_write_character(char const character);
+
+
 /*******************************************************************************
 *   FUNCTION DEFINITIONS                                                       *
 *******************************************************************************/
@@ -64,17 +81,7 @@ static void LCD_wait_if_busy(void)
 }
 
 
-void LCD_send_command(uint8_t const command)
-{
-    LCD_wait_if_busy();
-    DATA_LINES |= command;
-    CONTROL_LINES &= ~((1 << RW) | (1 << RS));  /* write mode, command mode */
-    LCD_execute_instruction();
-    DATA_LINES &= ~0xFF;                        /* clear data lines */
-}
-
-
-void LCD_move_cursor(uint8_t const x, uint8_t const y)
+static void LCD_move_cursor(uint8_t const x, uint8_t const y)
 {
     /* lookup table for ease of use, add more rows if needed */
     static uint8_t const row_pos[ROWS] = {
@@ -87,7 +94,7 @@ void LCD_move_cursor(uint8_t const x, uint8_t const y)
 }
 
 
-void LCD_write_character(char const character)
+static inline void LCD_write_character(char const character)
 {
     LCD_wait_if_busy();
     DATA_LINES |= character;        /* character sent through data lines */
@@ -99,7 +106,18 @@ void LCD_write_character(char const character)
 }
 
 
-void LCD_write_integer(uint8_t const x, uint8_t const y, int const number)
+extern void LCD_send_command(uint8_t const command)
+{
+    LCD_wait_if_busy();
+    DATA_LINES |= command;
+    CONTROL_LINES &= ~((1 << RW) | (1 << RS));  /* write mode, command mode */
+    LCD_execute_instruction();
+    DATA_LINES &= ~0xFF;                        /* clear data lines */
+}
+
+
+extern void LCD_write_integer(uint8_t const x, uint8_t const y,
+                              int const number)
 {
     char string_to_display[COLUMNS];
 
@@ -108,8 +126,8 @@ void LCD_write_integer(uint8_t const x, uint8_t const y, int const number)
 }
 
 
-void LCD_write_string(uint8_t const x, uint8_t const y,
-                      char const *string)
+extern void LCD_write_string(uint8_t const x, uint8_t const y,
+                             char const *string)
 {
     LCD_move_cursor(x, y);
     while(*string != '\0') {
@@ -118,7 +136,7 @@ void LCD_write_string(uint8_t const x, uint8_t const y,
 }
 
 
-void LCD_init(void)
+extern void LCD_init(void)
 {
     /* set control lines  */
     CONTROL_DIRECTION |= (1 << EN) | (1 << RW) | (1 << RS);

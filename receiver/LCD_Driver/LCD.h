@@ -91,8 +91,8 @@
 @param X & Y -coordinates, String to send
 @return void
 *******************************************************************************/
-void LCD_write_string(uint8_t const x, uint8_t const y,
-                      char const *string);
+extern void LCD_write_string(uint8_t const x, uint8_t const y,
+                             char const *string);
 
 
 /***************************************************************************//**
@@ -102,24 +102,7 @@ Sets write and command mode, executes instruction and clears used port.
 @param Hexadecimal command to send
 @return void
 *******************************************************************************/
-void LCD_send_command(uint8_t const command);
-
-
-/***************************************************************************//**
-@brief Moves LCD cursor to given position.
-@details Cursor is moved relative to first line.
-@param X & Y -coordinates
-@return void
-*******************************************************************************/
-void LCD_move_cursor(uint8_t const x, uint8_t const y);
-
-
-/***************************************************************************//**
-@brief Sends a character when LCD is available.
-@param Character to send
-@return void
-*******************************************************************************/
-void LCD_write_character(char const character);
+extern void LCD_send_command(uint8_t const command);
 
 
 /***************************************************************************//**
@@ -127,7 +110,8 @@ void LCD_write_character(char const character);
 @param x, y, integer to write
 @return void
 *******************************************************************************/
-void LCD_write_integer(uint8_t const x, uint8_t const y, int const number);
+extern void LCD_write_integer(uint8_t const x, uint8_t const y,
+                              int const number);
 
 
 /***************************************************************************//**
@@ -135,7 +119,7 @@ void LCD_write_integer(uint8_t const x, uint8_t const y, int const number);
 @param void
 @return void
 *******************************************************************************/
-void LCD_init(void);
+extern void LCD_init(void);
 
 
 #endif /* LCD_H_ */

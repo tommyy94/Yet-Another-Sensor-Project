@@ -135,7 +135,6 @@ delay:
     ret
 
 
-; Sleeps 10 ms at 1 MHz
 wait_until_tx_done:
     ldi  r18, 13
     ldi  r19, 250
@@ -200,7 +199,6 @@ ADC_vect:
     TOGGLE_BIT PINA5, PINA, PORTA
     #endif
     reti
-     
 
 
 INT0_vect:   
